@@ -1,81 +1,201 @@
 "use client";
 
-import { motion } from "framer-motion";
+import { useState, useEffect } from "react";
+import { motion, AnimatePresence } from "framer-motion";
 import { AuroraBackground } from "@/components/ui/aurora-background";
-import { Navbar } from "@/components/ui/navbar";
-import { Shield, AlertTriangle, Users, FileText, Scale, Eye } from "lucide-react";
+import { FileText, Shield, AlertTriangle, Scale, Users, Settings } from "lucide-react";
 
 export default function TermsOfService() {
+  const [isScrolled, setIsScrolled] = useState(false);
+  const [isOpen, setIsOpen] = useState(false);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      setIsScrolled(window.scrollY > 50);
+    };
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
+
+  const Navigation = () => (
+    <motion.nav
+      initial={{ y: -100 }}
+      animate={{ y: 0 }}
+      className={`
+        fixed w-full z-50 transition-all duration-500
+        ${isScrolled 
+          ? 'py-4 bg-gradient-to-r from-white/5 via-white/10 to-white/5 backdrop-blur-[12px] border-b border-white/10 shadow-[0_8px_32px_0_rgba(31,38,135,0.07)]'
+          : 'py-6 bg-transparent'}
+      `}
+    >
+      <div className="container mx-auto px-6">
+        {/* Desktop Navigation */}
+        <div className="hidden md:flex items-center">
+          <div className="flex w-full items-center justify-between px-6 py-2 rounded-full bg-white/10 backdrop-blur-md border border-white/20 shadow-[0_8px_32px_0_rgba(31,38,135,0.07)]">
+            {/* Logo on left */}
+            <span className="text-2xl font-bold bg-gradient-to-r from-blue-400 via-purple-500 to-pink-500 bg-clip-text text-transparent">
+              CreativeHub
+            </span>
+
+            {/* Navigation links on right with spacing */}
+            <div className="flex space-x-8">
+              {[
+                { title: 'Home', href: '/#home' },
+                { title: 'About', href: '/#about' },
+                { title: 'Features', href: '/#features' },
+                { title: 'Contact', href: '/#contact' },
+                { title: 'Terms & Conditions', href: '/Terms' },
+                { title: 'Privacy Policy', href: '/privacy' }
+              ].map((link) => (
+                <motion.a
+                  key={link.title}
+                  href={link.href}
+                  whileHover={{ scale: 1.05 }}
+                  className="relative group"
+                >
+                  <span className="text-sm font-medium text-gray-200 hover:text-white transition-colors duration-300">
+                    {link.title}
+                  </span>
+                  <span className="absolute inset-x-0 -bottom-1 h-0.5 bg-gradient-to-r from-blue-400 via-purple-500 to-pink-500 transform scale-x-0 group-hover:scale-x-100 transition-transform duration-300" />
+                </motion.a>
+              ))}
+            </div>
+          </div>
+        </div>
+
+        {/* Mobile Navigation Header */}
+        <div className="flex md:hidden items-center justify-between">
+          {/* Mobile Logo */}
+          <span className="text-2xl font-bold bg-gradient-to-r from-blue-400 via-purple-500 to-pink-500 bg-clip-text text-transparent">
+            CreativeHub
+          </span>
+
+          {/* Mobile Menu Button */}
+          <motion.button
+            whileTap={{ scale: 0.95 }}
+            onClick={() => setIsOpen(!isOpen)}
+            className="p-3 rounded-xl bg-white/10 backdrop-blur-md border border-white/20 hover:bg-white/20 transition-colors"
+            aria-label="Toggle menu"
+          >
+            <div className="w-6 h-5 flex flex-col justify-between">
+              <span className={`block w-6 h-0.5 bg-white transform transition-transform ${isOpen ? 'rotate-45 translate-y-2' : ''}`} />
+              <span className={`block w-6 h-0.5 bg-white transition-opacity ${isOpen ? 'opacity-0' : ''}`} />
+              <span className={`block w-6 h-0.5 bg-white transform transition-transform ${isOpen ? '-rotate-45 -translate-y-2' : ''}`} />
+            </div>
+          </motion.button>
+        </div>
+
+        {/* Mobile Menu Dropdown */}
+        <AnimatePresence>
+          {isOpen && (
+            <motion.div
+              initial={{ opacity: 0, y: -20 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -20 }}
+              transition={{ duration: 0.3 }}
+              className="md:hidden mt-4"
+            >
+              <div className="rounded-2xl bg-gradient-to-b from-white/10 to-white/5 backdrop-blur-xl border border-white/20 shadow-[0_8px_32px_0_rgba(31,38,135,0.07)] p-4 space-y-3">
+                {[
+                  { title: 'Home', href: '/#home' },
+                  { title: 'About', href: '/#about' },
+                  { title: 'Features', href: '/#features' },
+                  { title: 'Contact', href: '/#contact' },
+                  { title: 'Terms & Conditions', href: '/Terms' },
+                  { title: 'Privacy Policy', href: '/privacy' }
+                ].map((link, index) => (
+                  <motion.a
+                    key={link.title}
+                    href={link.href}
+                    initial={{ opacity: 0, x: -20 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    transition={{ delay: index * 0.1 }}
+                    onClick={() => setIsOpen(false)}
+                    className="block px-4 py-2 text-gray-200 hover:text-white rounded-lg hover:bg-white/10 transition-all duration-300"
+                  >
+                    {link.title}
+                  </motion.a>
+                ))}
+              </div>
+            </motion.div>
+          )}
+        </AnimatePresence>
+      </div>
+    </motion.nav>
+  );
+
   const sections = [
     {
-      icon: <Users className="w-6 h-6" />,
-      title: "Platform Usage",
+      icon: <FileText className="w-6 h-6" />,
+      title: "Acceptance of Terms",
       content: [
-        "Our platform is designed for entertainment industry professionals and creators aged 18 and above.",
-        "Users must provide accurate information during registration and maintain the security of their accounts.",
-        "Each user is responsible for all activities that occur under their account.",
-        "Commercial use of the platform requires appropriate subscription or licensing agreements."
+        "By accessing and using CreativeHub, you agree to be bound by these Terms of Service",
+        "You must be at least 18 years old to use the platform",
+        "You are responsible for maintaining the confidentiality of your account",
+        "You agree to provide accurate and complete information during registration",
+        "We reserve the right to modify these terms at any time"
       ]
     },
     {
       icon: <Shield className="w-6 h-6" />,
-      title: "Content Guidelines",
+      title: "User Conduct",
       content: [
-        "All uploaded content must be original work created by the user or properly licensed.",
-        "Plagiarism, copyright infringement, and unauthorized use of existing content is strictly prohibited.",
-        "Users retain ownership of their original content but grant us license to display and distribute it on the platform.",
-        "Content must comply with applicable laws and our community standards."
+        "Respect other users and their creative works",
+        "Do not upload content that infringes on intellectual property rights",
+        "Maintain professional conduct in all interactions",
+        "Do not engage in spam or unauthorized advertising",
+        "Report any violations or inappropriate content"
       ]
     },
     {
       icon: <AlertTriangle className="w-6 h-6" />,
-      title: "Prohibited Content",
+      title: "Content Guidelines",
       content: [
-        "Pornographic content and explicit sexual material are strictly prohibited.",
-        "Partial nudity similar to mainstream entertainment (Netflix-level) is acceptable for artistic purposes.",
-        "Gore, extreme violence, and content promoting harm to individuals or groups is not allowed.",
-        "Content that incites hatred, discrimination, or violence based on religion, race, gender, or other protected characteristics is prohibited.",
-        "Illegal activities, drug promotion, and content violating local laws are strictly forbidden."
-      ]
-    },
-    {
-      icon: <Eye className="w-6 h-6" />,
-      title: "Religious & Cultural Content",
-      content: [
-        "Respectful discussion and artistic interpretation of religious themes is welcome.",
-        "Light-hearted jokes and comedy about religions are acceptable when not malicious or hateful.",
-        "Content that deliberately offends, mocks, or demeans specific religious beliefs or practices is prohibited.",
-        "Forcing others to engage with religious content they find offensive is not allowed.",
-        "Cultural sensitivity and respect for diverse beliefs is expected from all users."
+        "All content must be original or properly licensed",
+        "No explicit, offensive, or illegal content",
+        "Respect copyright and intellectual property rights",
+        "Maintain appropriate content ratings",
+        "Follow industry standards and best practices"
       ]
     },
     {
       icon: <Scale className="w-6 h-6" />,
-      title: "Legal Compliance",
+      title: "Intellectual Property",
       content: [
-        "Users must comply with all applicable local, national, and international laws.",
-        "Any illegal activities conducted through the platform will result in immediate account termination.",
-        "We cooperate with law enforcement agencies when required by law.",
-        "Users are responsible for ensuring their content doesn't violate any third-party rights.",
-        "Disputes regarding intellectual property will be handled according to DMCA procedures."
+        "You retain ownership of your original content",
+        "You grant us license to display and distribute your content",
+        "Respect others' intellectual property rights",
+        "Report any copyright infringement",
+        "Follow fair use guidelines"
       ]
     },
     {
-      icon: <FileText className="w-6 h-6" />,
-      title: "Account Termination",
+      icon: <Users className="w-6 h-6" />,
+      title: "Community Guidelines",
       content: [
-        "We reserve the right to suspend or terminate accounts that violate these terms.",
-        "Repeated violations of community guidelines will result in permanent account closure.",
-        "Users may delete their accounts at any time, but some content may remain for legal compliance.",
-        "Terminated users forfeit access to all platform features and any paid subscriptions.",
-        "Appeals for account restoration can be submitted through our support channels."
+        "Be respectful and professional in all interactions",
+        "Provide constructive feedback",
+        "Maintain a positive and supportive environment",
+        "Respect diversity and inclusion",
+        "Follow platform-specific community rules"
+      ]
+    },
+    {
+      icon: <Settings className="w-6 h-6" />,
+      title: "Account Management",
+      content: [
+        "Keep your account information up to date",
+        "Use strong passwords and enable 2FA",
+        "Report any security concerns",
+        "Follow account termination procedures",
+        "Understand data retention policies"
       ]
     }
   ];
 
   return (
     <AuroraBackground>
-      <Navbar />
+      <Navigation />
       
       <div className="flex flex-col min-h-screen pt-24">
         {/* Header */}
@@ -87,17 +207,17 @@ export default function TermsOfService() {
             className="max-w-4xl mx-auto text-center"
           >
             <div className="flex items-center justify-center gap-3 mb-6">
-              <Scale className="w-8 h-8 text-blue-400" />
+              <FileText className="w-8 h-8 text-blue-400" />
               <h1 className="text-4xl md:text-6xl font-bold text-white">
                 Terms of Service
               </h1>
             </div>
             <p className="text-lg md:text-xl text-gray-300 leading-relaxed">
-              Please read these terms carefully. By using our platform, you agree to comply with these guidelines and policies.
+              Please read these terms carefully before using our platform. By using CreativeHub, you agree to these terms.
             </p>
             <div className="mt-6 bg-white/10 backdrop-blur-md border border-white/20 rounded-2xl p-6">
               <p className="text-sm text-gray-400">
-                Last updated: January 2025 • Effective immediately for all users
+                Last updated: January 2025 • We may update these terms periodically
               </p>
             </div>
           </motion.div>
@@ -136,25 +256,24 @@ export default function TermsOfService() {
               ))}
             </div>
 
-            {/* Contact Information */}
+            {/* Contact Section */}
             <motion.div
               initial={{ opacity: 0, y: 30 }}
               whileInView={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6 }}
-              className="mt-12 bg-gradient-to-r from-blue-500/20 to-purple-500/20 backdrop-blur-md border border-white/20 rounded-2xl p-8"
+              className="mt-8 bg-white/10 backdrop-blur-md border border-white/20 rounded-2xl p-8"
             >
-              <h3 className="text-2xl font-bold text-white mb-4">Questions or Concerns?</h3>
+              <h3 className="text-2xl font-bold text-white mb-4">Questions About Terms?</h3>
               <p className="text-gray-300 leading-relaxed mb-6">
-                If you have any questions about these Terms of Service or need clarification on any policies, 
-                please don't hesitate to contact our support team. We're here to help ensure a safe and 
-                creative environment for all users.
+                If you have questions about these Terms of Service or need clarification on any points, 
+                please contact our legal team.
               </p>
               <div className="flex flex-col sm:flex-row gap-4">
                 <button className="bg-white/20 backdrop-blur-md border border-white/30 text-white rounded-full px-6 py-3 font-medium hover:bg-white/30 transition-all duration-300">
-                  Contact Support
+                  Contact Legal Team
                 </button>
                 <button className="bg-white/10 backdrop-blur-md border border-white/20 text-white rounded-full px-6 py-3 font-medium hover:bg-white/20 transition-all duration-300">
-                  Report Violation
+                  Download Terms
                 </button>
               </div>
             </motion.div>
