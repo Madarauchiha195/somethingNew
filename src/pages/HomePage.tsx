@@ -35,7 +35,7 @@ export default function HomePage() {
           <div className="flex w-full items-center justify-between px-6 py-2 rounded-full bg-white/10 backdrop-blur-md border border-white/20 shadow-[0_8px_32px_0_rgba(31,38,135,0.07)]">
             {/* Logo on left */}
             <span className="text-2xl font-bold bg-gradient-to-r from-blue-400 via-purple-500 to-pink-500 bg-clip-text text-transparent">
-              CreativePro
+              CreativeHub
             </span>
 
             {/* Navigation links on right with spacing */}
