@@ -4,6 +4,7 @@ import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { AuroraBackground } from "@/components/ui/aurora-background";
 import { Camera, Palette, Music, Theater, Film, Users, Star, Sparkles, Award, Globe, Mic, Brush } from "lucide-react";
+import { Link } from "react-router-dom";
 
 export default function HomePage() {
   const [isScrolled, setIsScrolled] = useState(false);
@@ -203,18 +204,18 @@ export default function HomePage() {
             </div>
             
             <div className="flex flex-col sm:flex-row gap-4 mt-8">
-              <button className="bg-gradient-to-r from-blue-500 to-purple-600 text-white rounded-full px-8 py-4 font-semibold hover:from-blue-600 hover:to-purple-700 hover:scale-105 transition-all duration-300 shadow-2xl">
+              <Link to="/feed" className="bg-gradient-to-r from-blue-500 to-purple-600 text-white rounded-full px-8 py-4 font-semibold hover:from-blue-600 hover:to-purple-700 hover:scale-105 transition-all duration-300 shadow-2xl">
                 <span className="flex items-center gap-2">
                   <Star className="w-5 h-5" />
                   Start Creating
                 </span>
-              </button>
-              <button className="bg-white/10 backdrop-blur-md border border-white/20 text-white rounded-full px-8 py-4 font-semibold hover:bg-white/20 hover:scale-105 transition-all duration-300">
+              </Link>
+              <Link to="/feed" className="bg-white/10 backdrop-blur-md border border-white/20 text-white rounded-full px-8 py-4 font-semibold hover:bg-white/20 hover:scale-105 transition-all duration-300">
                 <span className="flex items-center gap-2">
                   <Globe className="w-5 h-5" />
                   Explore Talent
                 </span>
-              </button>
+              </Link>
             </div>
           </motion.div>
         </section>
@@ -392,26 +393,26 @@ export default function HomePage() {
             </p>
             
             <div className="flex flex-col sm:flex-row gap-6 justify-center items-center">
-              <button className="bg-gradient-to-r from-purple-500 to-pink-600 text-white rounded-full px-10 py-5 font-semibold hover:from-purple-600 hover:to-pink-700 hover:scale-105 transition-all duration-300 shadow-2xl">
+              <Link to="/feed" className="bg-gradient-to-r from-purple-500 to-pink-600 text-white rounded-full px-10 py-5 font-semibold hover:from-purple-600 hover:to-pink-700 hover:scale-105 transition-all duration-300 shadow-2xl">
                 <span className="flex items-center gap-3">
                   <Mic className="w-6 h-6" />
                   Join Our Community
                 </span>
-              </button>
-              <button className="bg-white/10 backdrop-blur-md border border-white/20 text-white rounded-full px-10 py-5 font-semibold hover:bg-white/20 hover:scale-105 transition-all duration-300">
+              </Link>
+              <Link to="/feed" className="bg-white/10 backdrop-blur-md border border-white/20 text-white rounded-full px-10 py-5 font-semibold hover:bg-white/20 hover:scale-105 transition-all duration-300">
                 <span className="flex items-center gap-3">
                   <Globe className="w-6 h-6" />
                   Learn More
                 </span>
-              </button>
+              </Link>
             </div>
             
             <div className="mt-16 bg-white/5 backdrop-blur-md border border-white/10 rounded-2xl p-8">
               <p className="text-gray-400 text-sm leading-relaxed">
                 By joining our platform, you agree to our community guidelines that promote creativity, respect, and professional collaboration. 
                 <br />
-                <a href="/terms" className="text-blue-400 hover:text-blue-300 transition-colors">Terms of Service</a> • 
-                <a href="/privacy" className="text-blue-400 hover:text-blue-300 transition-colors ml-2">Privacy Policy</a>
+                <Link to="/terms" className="text-blue-400 hover:text-blue-300 transition-colors">Terms of Service</Link> • 
+                <Link to="/privacy" className="text-blue-400 hover:text-blue-300 transition-colors ml-2">Privacy Policy</Link>
               </p>
             </div>
           </motion.div>

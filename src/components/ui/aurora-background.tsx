@@ -1,60 +1,24 @@
 "use client";
+import React from 'react';
 import { cn } from "@/lib/utils";
-import React, { ReactNode } from "react";
 
-interface AuroraBackgroundProps extends React.HTMLProps<HTMLDivElement> {
-  children: ReactNode;
-  showRadialGradient?: boolean;
+interface AuroraBackgroundProps {
+  children: React.ReactNode;
 }
 
-export const AuroraBackground = ({
-  className,
-  children,
-  showRadialGradient = true,
-  ...props
-}: AuroraBackgroundProps) => {
+export const AuroraBackground: React.FC<AuroraBackgroundProps> = ({ children }) => {
   return (
-    <div
-      className={cn(
-        "relative min-h-screen w-full bg-black text-white overflow-x-hidden",
-        className,
-      )}
-      {...props}
-    >
-      {/* Aurora Background Layer */}
-      <div
-        className="fixed inset-0 overflow-hidden"
-        style={
-          {
-            "--aurora":
-              "repeating-linear-gradient(100deg,#3b82f6_10%,#a5b4fc_15%,#93c5fd_20%,#ddd6fe_25%,#60a5fa_30%)",
-            "--dark-gradient":
-              "repeating-linear-gradient(100deg,#000_0%,#000_7%,transparent_10%,transparent_12%,#000_16%)",
-            "--white-gradient":
-              "repeating-linear-gradient(100deg,#fff_0%,#fff_7%,transparent_10%,transparent_12%,#fff_16%)",
-
-            "--blue-300": "#93c5fd",
-            "--blue-400": "#60a5fa",
-            "--blue-500": "#3b82f6",
-            "--indigo-300": "#a5b4fc",
-            "--violet-200": "#ddd6fe",
-            "--black": "#000",
-            "--white": "#fff",
-            "--transparent": "transparent",
-          } as React.CSSProperties
-        }
-      >
-        <div
-          className={cn(
-            `after:animate-aurora pointer-events-none absolute -inset-[10px] [background-image:var(--dark-gradient),var(--aurora)] [background-size:300%,_200%] [background-position:50%_50%,50%_50%] opacity-80 blur-[10px] will-change-transform [--aurora:repeating-linear-gradient(100deg,var(--blue-500)_10%,var(--indigo-300)_15%,var(--blue-300)_20%,var(--violet-200)_25%,var(--blue-400)_30%)] [--dark-gradient:repeating-linear-gradient(100deg,var(--black)_0%,var(--black)_7%,var(--transparent)_10%,var(--transparent)_12%,var(--black)_16%)] [--white-gradient:repeating-linear-gradient(100deg,var(--white)_0%,var(--white)_7%,var(--transparent)_10%,var(--transparent)_12%,var(--white)_16%)] after:absolute after:inset-0 after:[background-image:var(--dark-gradient),var(--aurora)] after:[background-size:200%,_100%] after:mix-blend-screen after:content-[""]`,
-
-            showRadialGradient &&
-              `[mask-image:radial-gradient(ellipse_at_100%_0%,black_10%,var(--transparent)_70%)]`,
-          )}
-        ></div>
+    <div className="relative min-h-screen bg-black overflow-hidden">
+      {/* Aurora Effect */}
+      <div className="absolute inset-0 overflow-hidden">
+        <div className="absolute -inset-[10px] opacity-50">
+          <div className="absolute top-0 -left-4 w-72 h-72 bg-purple-500 rounded-full mix-blend-multiply filter blur-xl opacity-70 animate-blob" />
+          <div className="absolute top-0 -right-4 w-72 h-72 bg-yellow-500 rounded-full mix-blend-multiply filter blur-xl opacity-70 animate-blob animation-delay-2000" />
+          <div className="absolute -bottom-8 left-20 w-72 h-72 bg-pink-500 rounded-full mix-blend-multiply filter blur-xl opacity-70 animate-blob animation-delay-4000" />
+        </div>
       </div>
 
-      {/* Content Layer */}
+      {/* Content */}
       <div className="relative z-10">
         {children}
       </div>
