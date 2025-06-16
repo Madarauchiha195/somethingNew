@@ -12,7 +12,7 @@ export default function HomePage() {
 
   useEffect(() => {
     const handleScroll = () => {
-      setIsScrolled(window.scrollY > 50);
+      setIsScrolled(window.scrollY > 100);
     };
     window.addEventListener('scroll', handleScroll);
     return () => window.removeEventListener('scroll', handleScroll);
@@ -20,110 +20,111 @@ export default function HomePage() {
 
 
   const Navigation = () => (
-    <motion.nav
-      initial={{ y: -100 }}
-      animate={{ y: 0 }}
-      className={`
-        fixed w-full z-50 transition-all duration-500
-        ${isScrolled 
-          ? 'py-4 bg-gradient-to-r from-white/5 via-white/10 to-white/5 backdrop-blur-[12px] border-b border-white/10 shadow-[0_8px_32px_0_rgba(31,38,135,0.07)]'
-          : 'py-6 bg-transparent'}
-      `}
-    >
-      <div className="container mx-auto px-6">
-        {/* Desktop Navigation */}
-        <div className="hidden md:flex items-center">
-          <div className="flex w-full items-center justify-between px-6 py-2 rounded-full bg-white/10 backdrop-blur-md border border-white/20 shadow-[0_8px_32px_0_rgba(31,38,135,0.07)]">
-            {/* Logo on left */}
-            <span className="text-2xl font-bold bg-gradient-to-r from-blue-400 via-purple-500 to-pink-500 bg-clip-text text-transparent">
-              CreativeHub
-            </span>
+    <AnimatePresence>
+      {isScrolled && (
+        <motion.nav
+          initial={{ y: -100, opacity: 0 }}
+          animate={{ y: 0, opacity: 1 }}
+          exit={{ y: -100, opacity: 0 }}
+          transition={{ duration: 0.3 }}
+          className="fixed w-full z-50 py-4 bg-gradient-to-r from-white/5 via-white/10 to-white/5 backdrop-blur-[12px] border-b border-white/10 shadow-[0_8px_32px_0_rgba(31,38,135,0.07)]"
+        >
+          <div className="container mx-auto px-6">
+            {/* Desktop Navigation */}
+            <div className="hidden md:flex items-center">
+              <div className="flex w-full items-center justify-between px-6 py-2 rounded-full bg-white/10 backdrop-blur-md border border-white/20 shadow-[0_8px_32px_0_rgba(31,38,135,0.07)]">
+                {/* Logo on left */}
+                <span className="text-2xl font-bold bg-gradient-to-r from-blue-400 via-purple-500 to-pink-500 bg-clip-text text-transparent">
+                  CreativeHub
+                </span>
 
-            {/* Navigation links on right with spacing */}
-            <div className="flex space-x-8">
-              {[
-                { title: 'Home', href: '#home' },
-                { title: 'About', href: '#about' },
-                { title: 'Features', href: '#features' },
-                { title: 'Contact', href: '#contact' },
-                { title: 'Terms & Conditions', href: '/Terms' },
-                { title: 'Privacy Policy', href: '/privacy' }
-              ].map((link) => (
-                <motion.a
-                  key={link.title}
-                  href={link.href}
-                  whileHover={{ scale: 1.05 }}
-                  className="relative group"
-                >
-                  <span className="text-sm font-medium text-gray-200 hover:text-white transition-colors duration-300">
-                    {link.title}
-                  </span>
-                  <span className="absolute inset-x-0 -bottom-1 h-0.5 bg-gradient-to-r from-blue-400 via-purple-500 to-pink-500 transform scale-x-0 group-hover:scale-x-100 transition-transform duration-300" />
-                </motion.a>
-              ))}
-            </div>
-          </div>
-        </div>
-
-        {/* Mobile Navigation Header */}
-        <div className="flex md:hidden items-center justify-between">
-          {/* Mobile Logo */}
-          <span className="text-2xl font-bold bg-gradient-to-r from-blue-400 via-purple-500 to-pink-500 bg-clip-text text-transparent">
-            CreativePro
-          </span>
-
-          {/* Mobile Menu Button */}
-          <motion.button
-            whileTap={{ scale: 0.95 }}
-            onClick={() => setIsOpen(!isOpen)}
-            className="p-3 rounded-xl bg-white/10 backdrop-blur-md border border-white/20 hover:bg-white/20 transition-colors"
-            aria-label="Toggle menu"
-          >
-            <div className="w-6 h-5 flex flex-col justify-between">
-              <span className={`block w-6 h-0.5 bg-white transform transition-transform ${isOpen ? 'rotate-45 translate-y-2' : ''}`} />
-              <span className={`block w-6 h-0.5 bg-white transition-opacity ${isOpen ? 'opacity-0' : ''}`} />
-              <span className={`block w-6 h-0.5 bg-white transform transition-transform ${isOpen ? '-rotate-45 -translate-y-2' : ''}`} />
-            </div>
-          </motion.button>
-        </div>
-
-        {/* Mobile Menu Dropdown */}
-        <AnimatePresence>
-          {isOpen && (
-            <motion.div
-              initial={{ opacity: 0, y: -20 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: -20 }}
-              transition={{ duration: 0.3 }}
-              className="md:hidden mt-4"
-            >
-              <div className="rounded-2xl bg-gradient-to-b from-white/10 to-white/5 backdrop-blur-xl border border-white/20 shadow-[0_8px_32px_0_rgba(31,38,135,0.07)] p-4 space-y-3">
-                {[
-                  { title: 'Home', href: '#home' },
-                  { title: 'About', href: '#about' },
-                  { title: 'Features', href: '#features' },
-                  { title: 'Contact', href: '#contact' },
-                  { title: 'Terms & Conditions', href: '/Terms' },
-                  { title: 'Privacy Policy', href: '/privacy' }
-                ].map((link, index) => (
-                  <motion.a
-                    key={link.title}
-                    href={link.href}
-                    initial={{ opacity: 0, x: -20 }}
-                    animate={{ opacity: 1, x: 0 }}
-                    transition={{ delay: index * 0.1 }}
-                    onClick={() => setIsOpen(false)}
-                    className="block px-4 py-2 text-gray-200 hover:text-white rounded-lg hover:bg-white/10 transition-all duration-300"
-                  >
-                    {link.title}
-                  </motion.a>
-                ))}
+                {/* Navigation links on right with spacing */}
+                <div className="flex space-x-8">
+                  {[
+                    { title: 'Home', href: '#home' },
+                    { title: 'About', href: '#about' },
+                    { title: 'Features', href: '#features' },
+                    { title: 'Contact', href: '#contact' },
+                    { title: 'Terms & Conditions', href: '/terms' },
+                    { title: 'Privacy Policy', href: '/privacy' }
+                  ].map((link) => (
+                    <motion.a
+                      key={link.title}
+                      href={link.href}
+                      whileHover={{ scale: 1.05 }}
+                      className="relative group"
+                    >
+                      <span className="text-sm font-medium text-gray-200 hover:text-white transition-colors duration-300">
+                        {link.title}
+                      </span>
+                      <span className="absolute inset-x-0 -bottom-1 h-0.5 bg-gradient-to-r from-blue-400 via-purple-500 to-pink-500 transform scale-x-0 group-hover:scale-x-100 transition-transform duration-300" />
+                    </motion.a>
+                  ))}
+                </div>
               </div>
-            </motion.div>
-          )}
-        </AnimatePresence>
-      </div>
-    </motion.nav>
+            </div>
+
+            {/* Mobile Navigation Header */}
+            <div className="flex md:hidden items-center justify-between">
+              {/* Mobile Logo */}
+              <span className="text-2xl font-bold bg-gradient-to-r from-blue-400 via-purple-500 to-pink-500 bg-clip-text text-transparent">
+                CreativePro
+              </span>
+
+              {/* Mobile Menu Button */}
+              <motion.button
+                whileTap={{ scale: 0.95 }}
+                onClick={() => setIsOpen(!isOpen)}
+                className="p-3 rounded-xl bg-white/10 backdrop-blur-md border border-white/20 hover:bg-white/20 transition-colors"
+                aria-label="Toggle menu"
+              >
+                <div className="w-6 h-5 flex flex-col justify-between">
+                  <span className={`block w-6 h-0.5 bg-white transform transition-transform ${isOpen ? 'rotate-45 translate-y-2' : ''}`} />
+                  <span className={`block w-6 h-0.5 bg-white transition-opacity ${isOpen ? 'opacity-0' : ''}`} />
+                  <span className={`block w-6 h-0.5 bg-white transform transition-transform ${isOpen ? '-rotate-45 -translate-y-2' : ''}`} />
+                </div>
+              </motion.button>
+            </div>
+
+            {/* Mobile Menu Dropdown */}
+            <AnimatePresence>
+              {isOpen && (
+                <motion.div
+                  initial={{ opacity: 0, y: -20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0, y: -20 }}
+                  transition={{ duration: 0.3 }}
+                  className="md:hidden mt-4"
+                >
+                  <div className="rounded-2xl bg-gradient-to-b from-white/10 to-white/5 backdrop-blur-xl border border-white/20 shadow-[0_8px_32px_0_rgba(31,38,135,0.07)] p-4 space-y-3">
+                    {[
+                      { title: 'Home', href: '#home' },
+                      { title: 'About', href: '#about' },
+                      { title: 'Features', href: '#features' },
+                      { title: 'Contact', href: '#contact' },
+                      { title: 'Terms & Conditions', href: '/terms' },
+                      { title: 'Privacy Policy', href: '/privacy' }
+                    ].map((link, index) => (
+                      <motion.a
+                        key={link.title}
+                        href={link.href}
+                        initial={{ opacity: 0, x: -20 }}
+                        animate={{ opacity: 1, x: 0 }}
+                        transition={{ delay: index * 0.1 }}
+                        onClick={() => setIsOpen(false)}
+                        className="block px-4 py-2 text-gray-200 hover:text-white rounded-lg hover:bg-white/10 transition-all duration-300"
+                      >
+                        {link.title}
+                      </motion.a>
+                    ))}
+                  </div>
+                </motion.div>
+              )}
+            </AnimatePresence>
+          </div>
+        </motion.nav>
+      )}
+    </AnimatePresence>
   );
 
   const features = [
@@ -204,18 +205,18 @@ export default function HomePage() {
             </div>
             
             <div className="flex flex-col sm:flex-row gap-4 mt-8">
-              <Link to="/feed" className="bg-gradient-to-r from-blue-500 to-purple-600 text-white rounded-full px-8 py-4 font-semibold hover:from-blue-600 hover:to-purple-700 hover:scale-105 transition-all duration-300 shadow-2xl">
+              <button className="bg-gradient-to-r from-blue-500 to-purple-600 text-white rounded-full px-8 py-4 font-semibold hover:from-blue-600 hover:to-purple-700 hover:scale-105 transition-all duration-300 shadow-2xl">
                 <span className="flex items-center gap-2">
                   <Star className="w-5 h-5" />
                   Start Creating
                 </span>
-              </Link>
-              <Link to="/feed" className="bg-white/10 backdrop-blur-md border border-white/20 text-white rounded-full px-8 py-4 font-semibold hover:bg-white/20 hover:scale-105 transition-all duration-300">
+              </button>
+              <button className="bg-white/10 backdrop-blur-md border border-white/20 text-white rounded-full px-8 py-4 font-semibold hover:bg-white/20 hover:scale-105 transition-all duration-300">
                 <span className="flex items-center gap-2">
                   <Globe className="w-5 h-5" />
                   Explore Talent
                 </span>
-              </Link>
+              </button>
             </div>
           </motion.div>
         </section>
@@ -393,18 +394,18 @@ export default function HomePage() {
             </p>
             
             <div className="flex flex-col sm:flex-row gap-6 justify-center items-center">
-              <Link to="/feed" className="bg-gradient-to-r from-purple-500 to-pink-600 text-white rounded-full px-10 py-5 font-semibold hover:from-purple-600 hover:to-pink-700 hover:scale-105 transition-all duration-300 shadow-2xl">
+              <button className="bg-gradient-to-r from-purple-500 to-pink-600 text-white rounded-full px-10 py-5 font-semibold hover:from-purple-600 hover:to-pink-700 hover:scale-105 transition-all duration-300 shadow-2xl">
                 <span className="flex items-center gap-3">
                   <Mic className="w-6 h-6" />
                   Join Our Community
                 </span>
-              </Link>
-              <Link to="/feed" className="bg-white/10 backdrop-blur-md border border-white/20 text-white rounded-full px-10 py-5 font-semibold hover:bg-white/20 hover:scale-105 transition-all duration-300">
+              </button>
+              <button className="bg-white/10 backdrop-blur-md border border-white/20 text-white rounded-full px-10 py-5 font-semibold hover:bg-white/20 hover:scale-105 transition-all duration-300">
                 <span className="flex items-center gap-3">
                   <Globe className="w-6 h-6" />
                   Learn More
                 </span>
-              </Link>
+              </button>
             </div>
             
             <div className="mt-16 bg-white/5 backdrop-blur-md border border-white/10 rounded-2xl p-8">
