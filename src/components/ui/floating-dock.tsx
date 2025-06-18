@@ -12,6 +12,7 @@ interface FloatingDockProps {
 export function FloatingDock({ className = "" }: FloatingDockProps) {
   const [isExpanded, setIsExpanded] = useState(false);
   const [activeItem, setActiveItem] = useState<string | null>(null);
+  const [showCreateModal, setShowCreateModal] = useState(false);
 
   const menuItems = [
     { icon: <Home className="w-6 h-6" />, label: "Home", href: "/mainfeed" },
