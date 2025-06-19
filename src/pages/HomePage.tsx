@@ -209,25 +209,25 @@ export default function HomePage() {
               From cartoons to cinematics, comedy to drama - showcase your talent, connect with industry professionals, and bring your creative vision to life without boundaries.
             </div>
             
-            <div className="flex flex-col sm:flex-row gap-4 mt-8">
-                <button
-                  onClick={handleNavigateToplatform}
-                  className="bg-gradient-to-r from-blue-400 via-purple-500 to-pink-500 text-white px-8 py-4 rounded-full font-bold hover:opacity-90 transition-opacity"
-                >
-                  <span className="flex items-center gap-2">
-                    <Star className="w-5 h-5" />
-                    Start Creating
-                  </span>
-                </button>
-                <button
-                  onClick={handleNavigateToplatform}
-                  className="bg-white bg-opacity-10 text-white px-8 py-4 rounded-full font-bold hover:bg-opacity-20 transition-opacity backdrop-blur-sm"
-                >
-                  <span className="flex items-center gap-2">
-                    <Globe className="w-5 h-5" />
-                    Explore Talent
-                  </span>
-                </button>
+            <div className="flex items-center gap-4">
+              <button
+                onClick={() => { navigate('/coming-soon'); }}
+                className="bg-gradient-to-r from-blue-400 via-purple-500 to-pink-500 text-white px-8 py-4 rounded-full font-bold hover:opacity-90 transition-opacity"
+              >
+                <span className="flex items-center gap-2">
+                  <Star className="w-5 h-5" />
+                  Start Creating
+                </span>
+              </button>
+              <button
+                onClick={() => navigate('/coming-soon')}
+                className="bg-white bg-opacity-10 text-white px-8 py-4 rounded-full font-bold hover:bg-opacity-20 transition-opacity backdrop-blur-sm"
+              >
+                <span className="flex items-center gap-2">
+                  <Globe className="w-5 h-5" />
+                  Explore Talent
+                </span>
+              </button>
             </div>
           </motion.div>
         </section>
@@ -406,7 +406,7 @@ export default function HomePage() {
             
             <div className="flex flex-col sm:flex-row gap-6 justify-center items-center">
               <Link
-                to="/mainfeed"
+                to="/coming-soon"
                 className="bg-gradient-to-r from-purple-500 to-pink-600 text-white rounded-full px-10 py-5 font-semibold hover:from-purple-600 hover:to-pink-700 hover:scale-105 transition-all duration-300 shadow-2xl hover:text-white focus:text-white active:text-white"
               >
                 <span className="flex items-center gap-3">
@@ -415,7 +415,7 @@ export default function HomePage() {
                 </span>
               </Link>
               <Link
-                to="/mainfeed"
+                to="/coming-soon"
                 className="bg-white/10 backdrop-blur-md border border-white/20 text-white rounded-full px-10 py-5 font-semibold hover:bg-white/20 hover:scale-105 transition-all duration-300 hover:text-white focus:text-white active:text-white"
               >
                 <span className="flex items-center gap-3">
